@@ -1,0 +1,1988 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📋 कांड्डी व्यवस्थापन सॉफ्टवेअर</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary: #1a3a5c;
+  --primary-light: #254e7a;
+  --accent: #f5a623;
+  --accent2: #00b4d8;
+  --green: #2e7d32;
+  --red: #c62828;
+  --bg: #f0f4f8;
+  --card: #ffffff;
+  --border: #dde3ea;
+  --text: #1a2640;
+  --muted: #6b7a8d;
+  --yellow: #fff176;
+  --yellow-dark: #f9a825;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ===== PAGES ===== */
+.page { display:none; min-height:100vh; }
+.page.active { display:block; }
+
+/* ===== LOGIN PAGE ===== */
+#loginPage {
+  background: #0a0f1e;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+  min-height:100vh;
+}
+
+/* Animated grain/stars */
+#loginPage canvas {
+  position:absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  z-index:0;
+}
+
+/* Glowing orbs */
+.login-orb {
+  position:absolute;
+  border-radius:50%;
+  filter:blur(80px);
+  animation: orbFloat 8s ease-in-out infinite;
+  z-index:0;
+}
+.login-orb.o1 {
+  width:420px; height:420px;
+  background: radial-gradient(circle, rgba(245,166,35,0.35), transparent 70%);
+  top:-120px; right:-80px;
+  animation-delay:0s;
+}
+.login-orb.o2 {
+  width:380px; height:380px;
+  background: radial-gradient(circle, rgba(0,180,216,0.3), transparent 70%);
+  bottom:-100px; left:-80px;
+  animation-delay:-3s;
+}
+.login-orb.o3 {
+  width:260px; height:260px;
+  background: radial-gradient(circle, rgba(120,80,255,0.25), transparent 70%);
+  top:40%; left:30%;
+  animation-delay:-5s;
+}
+
+@keyframes orbFloat {
+  0%,100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-30px) scale(1.08); }
+}
+
+/* Split layout */
+.login-wrap {
+  display:flex;
+  width:900px;
+  max-width:96vw;
+  min-height:540px;
+  z-index:1;
+  border-radius:28px;
+  overflow:hidden;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.07);
+  animation: loginFadeIn 0.7s cubic-bezier(.22,.97,.48,1) both;
+}
+
+@keyframes loginFadeIn {
+  from { opacity:0; transform:translateY(40px) scale(0.97); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+
+/* Left panel — branding */
+.login-left {
+  flex:1.1;
+  background: linear-gradient(145deg, #f5a623 0%, #e06c00 40%, #c0392b 100%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:48px 36px;
+  position:relative;
+  overflow:hidden;
+}
+
+.login-left::before {
+  content:'';
+  position:absolute;
+  width:300px; height:300px;
+  background: rgba(255,255,255,0.08);
+  border-radius:50%;
+  top:-80px; right:-80px;
+}
+.login-left::after {
+  content:'';
+  position:absolute;
+  width:200px; height:200px;
+  background: rgba(255,255,255,0.06);
+  border-radius:50%;
+  bottom:-60px; left:-40px;
+}
+
+.login-left .brand-icon {
+  width:90px; height:90px;
+  background:rgba(255,255,255,0.18);
+  border:2.5px solid rgba(255,255,255,0.35);
+  border-radius:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:44px;
+  margin-bottom:22px;
+  backdrop-filter:blur(8px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.3);
+  animation: iconPulse 3s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+  0%,100% { box-shadow: 0 8px 32px rgba(0,0,0,0.2), 0 0 0 0 rgba(255,255,255,0.2); }
+  50%      { box-shadow: 0 8px 32px rgba(0,0,0,0.2), 0 0 0 12px rgba(255,255,255,0); }
+}
+
+.login-left h2 {
+  color:white;
+  font-size:26px;
+  font-weight:800;
+  text-align:center;
+  line-height:1.3;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  letter-spacing:0.3px;
+  font-family:'Noto Sans Devanagari','Poppins',sans-serif;
+}
+
+.login-left .tagline {
+  color:rgba(255,255,255,0.8);
+  font-size:13px;
+  margin-top:10px;
+  text-align:center;
+  line-height:1.6;
+  font-family:'Noto Sans Devanagari',sans-serif;
+}
+
+.login-features {
+  margin-top:32px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  width:100%;
+  position:relative;
+  z-index:1;
+}
+
+.login-feature-item {
+  background:rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:12px;
+  padding:10px 16px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:white;
+  font-size:13px;
+  font-family:'Noto Sans Devanagari',sans-serif;
+  backdrop-filter:blur(4px);
+}
+
+.login-feature-item span.fi {
+  font-size:18px;
+  flex-shrink:0;
+}
+
+/* Right panel — form */
+.login-right {
+  flex:1;
+  background:#0f1729;
+  padding:48px 42px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.login-right h3 {
+  color:white;
+  font-size:24px;
+  font-weight:700;
+  margin-bottom:6px;
+  letter-spacing:0.3px;
+}
+
+.login-right .sub {
+  color:rgba(255,255,255,0.45);
+  font-size:13px;
+  margin-bottom:32px;
+  font-family:'Noto Sans Devanagari',sans-serif;
+}
+
+.lf-group {
+  margin-bottom:20px;
+  position:relative;
+}
+
+.lf-group label {
+  display:block;
+  font-size:11.5px;
+  font-weight:700;
+  color:rgba(255,255,255,0.5);
+  margin-bottom:8px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.lf-input-wrap {
+  position:relative;
+}
+
+.lf-input-wrap .lf-icon {
+  position:absolute;
+  left:14px; top:50%;
+  transform:translateY(-50%);
+  font-size:16px;
+  opacity:0.5;
+  pointer-events:none;
+}
+
+.lf-group input {
+  width:100%;
+  background:rgba(255,255,255,0.06);
+  border:1.5px solid rgba(255,255,255,0.1);
+  border-radius:12px;
+  padding:13px 16px 13px 44px;
+  font-size:14px;
+  color:white;
+  outline:none;
+  font-family:inherit;
+  transition:all .25s;
+}
+
+.lf-group input::placeholder { color:rgba(255,255,255,0.25); }
+
+.lf-group input:focus {
+  border-color:#f5a623;
+  background:rgba(245,166,35,0.07);
+  box-shadow:0 0 0 3px rgba(245,166,35,0.15);
+}
+
+.btn-login {
+  width:100%;
+  background: linear-gradient(135deg, #f5a623 0%, #e06c00 100%);
+  color:white;
+  border:none;
+  border-radius:12px;
+  padding:14px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+  font-family:inherit;
+  margin-top:4px;
+  transition:all .25s;
+  letter-spacing:0.5px;
+  position:relative;
+  overflow:hidden;
+}
+
+.btn-login::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+  border-radius:inherit;
+}
+
+.btn-login:hover {
+  transform:translateY(-2px);
+  box-shadow: 0 12px 30px rgba(245,166,35,0.45);
+}
+
+.btn-login:active { transform:translateY(0); }
+
+.login-error {
+  background:rgba(198,40,40,0.15);
+  border:1px solid rgba(198,40,40,0.35);
+  border-radius:10px;
+  padding:10px 14px;
+  color:#ff8a80;
+  font-size:13px;
+  margin-bottom:16px;
+  display:none;
+  font-family:'Noto Sans Devanagari',sans-serif;
+}
+
+.login-hint {
+  margin-top:20px;
+  text-align:center;
+  font-size:11.5px;
+  color:rgba(255,255,255,0.2);
+  font-family:'Noto Sans Devanagari',sans-serif;
+}
+
+/* Hide old .login-container */
+.login-container { display:none !important; }
+
+@media(max-width:680px){
+  .login-wrap { flex-direction:column; width:94vw; min-height:unset; }
+  .login-left { padding:32px 24px; }
+  .login-right { padding:32px 24px; }
+  .login-features { display:none; }
+}
+
+/* ===== APP SHELL ===== */
+#appShell { display:none; min-height:100vh; flex-direction:column; }
+#appShell.active { display:flex; }
+
+.topbar {
+  background:var(--primary);
+  height:54px;
+  display:flex;
+  align-items:center;
+  padding:0 20px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.2);
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.topbar-brand {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:white;
+  font-weight:700;
+  font-size:16px;
+}
+
+.topbar-brand .t-icon {
+  width:32px; height:32px;
+  background:var(--accent);
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:16px;
+}
+
+.topbar-nav {
+  display:flex;
+  gap:2px;
+  margin-left:28px;
+}
+
+.nav-btn {
+  color:rgba(255,255,255,0.6);
+  background:transparent;
+  border:none;
+  padding:8px 16px;
+  border-radius:7px;
+  font-size:13px;
+  font-weight:500;
+  cursor:pointer;
+  font-family:inherit;
+  transition:all .2s;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.nav-btn:hover { color:white; background:rgba(255,255,255,0.1); }
+.nav-btn.active { color:white; background:rgba(255,255,255,0.15); }
+
+.topbar-right {
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.user-pill {
+  background:rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:20px;
+  padding:5px 14px;
+  color:rgba(255,255,255,0.85);
+  font-size:12.5px;
+  font-weight:500;
+}
+
+.btn-logout {
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.3);
+  border-radius:7px;
+  color:rgba(255,255,255,0.7);
+  padding:5px 12px;
+  font-size:12px;
+  cursor:pointer;
+  font-family:inherit;
+  transition:all .2s;
+}
+
+.btn-logout:hover { background:rgba(198,40,40,0.2); border-color:rgba(198,40,40,0.5); color:#ff8a80; }
+
+.app-content { flex:1; padding:24px; }
+
+/* Month/Year selector bar */
+.month-bar {
+  background:white;
+  border-radius:12px;
+  padding:14px 20px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-bottom:20px;
+  box-shadow:0 1px 6px rgba(0,0,0,0.07);
+  flex-wrap:wrap;
+}
+
+.month-bar label { font-size:13px; font-weight:600; color:var(--muted); }
+
+.month-bar select, .month-bar input[type=number] {
+  border:1.5px solid var(--border);
+  border-radius:8px;
+  padding:7px 12px;
+  font-size:13px;
+  font-family:inherit;
+  outline:none;
+  color:var(--text);
+  transition:border-color .2s;
+}
+
+.month-bar select:focus, .month-bar input:focus { border-color:var(--accent2); }
+
+.month-bar .month-title {
+  font-size:15px;
+  font-weight:700;
+  color:var(--primary);
+  margin-left:auto;
+}
+
+/* ===== SECTION HEADERS ===== */
+.section-card {
+  background:var(--card);
+  border-radius:14px;
+  box-shadow:0 2px 12px rgba(0,0,0,0.07);
+  margin-bottom:24px;
+  overflow:hidden;
+}
+
+.section-header {
+  background:var(--primary);
+  color:white;
+  padding:13px 20px;
+  font-size:15px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-family:'Noto Sans Devanagari', 'Poppins', sans-serif;
+}
+
+/* ===== KANDDI TABLE ===== */
+.kanddi-table-wrap { overflow-x:auto; }
+
+table.kanddi-table {
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+}
+
+table.kanddi-table thead tr {
+  background:#1e4976;
+}
+
+table.kanddi-table thead th {
+  color:white;
+  padding:10px 12px;
+  text-align:center;
+  font-weight:600;
+  font-size:12.5px;
+  border-right:1px solid rgba(255,255,255,0.15);
+  white-space:nowrap;
+  font-family:'Noto Sans Devanagari', sans-serif;
+}
+
+table.kanddi-table tbody tr:nth-child(even) { background:#f8fafd; }
+table.kanddi-table tbody tr:nth-child(odd) { background:#fff; }
+table.kanddi-table tbody tr:hover { background:#e8f4fd; }
+
+table.kanddi-table tbody td {
+  padding:6px 8px;
+  border:1px solid #e8ecf2;
+  text-align:center;
+  color:#333;
+}
+
+table.kanddi-table tbody td:first-child {
+  font-weight:700;
+  color:var(--primary);
+  background:#f0f7ff;
+  width:48px;
+}
+
+table.kanddi-table td.date-cell {
+  font-size:12px;
+  color:var(--muted);
+  font-weight:500;
+  width:80px;
+  background:#f8f9fa !important;
+}
+
+table.kanddi-table input.cell-input {
+  width:80px;
+  border:none;
+  background:transparent;
+  text-align:center;
+  font-size:13px;
+  font-family:inherit;
+  color:var(--text);
+  padding:4px 6px;
+  border-radius:4px;
+  outline:none;
+  transition:background .15s;
+}
+
+table.kanddi-table input.cell-input:focus {
+  background:#fff3e0;
+  box-shadow:inset 0 0 0 1.5px var(--accent);
+}
+
+table.kanddi-table .total-row {
+  background:#1e4976 !important;
+}
+
+table.kanddi-table .total-row td {
+  color:white !important;
+  font-weight:700;
+  border:1px solid rgba(255,255,255,0.15) !important;
+  font-size:13.5px;
+  background:#1e4976 !important;
+}
+
+/* ===== SUMMARY PAGE (Page 3) ===== */
+.summary-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  padding:20px;
+}
+
+@media(max-width:900px){ .summary-grid { grid-template-columns:1fr; } }
+
+.summary-mini-card {
+  border:2px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.summary-mini-header {
+  background:#1e4976;
+  color:white;
+  padding:9px 14px;
+  font-size:13px;
+  font-weight:700;
+  font-family:'Noto Sans Devanagari', sans-serif;
+}
+
+.summary-mini-table {
+  width:100%;
+  border-collapse:collapse;
+  font-size:12.5px;
+}
+
+.summary-mini-table th {
+  background:#2d5986;
+  color:white;
+  padding:7px 10px;
+  text-align:center;
+  font-size:12px;
+}
+
+.summary-mini-table td {
+  padding:6px 10px;
+  border-bottom:1px solid #eee;
+  text-align:center;
+  color:#333;
+}
+
+.summary-mini-table tr:last-child td {
+  background:#1e4976;
+  color:white;
+  font-weight:700;
+}
+
+/* Goni Summary Table */
+.goni-summary-table {
+  width:100%;
+  border-collapse:collapse;
+  font-size:13.5px;
+}
+
+.goni-summary-table td {
+  padding:10px 16px;
+  border:1px solid #dde3ea;
+}
+
+.goni-summary-table td:first-child {
+  font-weight:600;
+  font-family:'Noto Sans Devanagari', sans-serif;
+  color:var(--text);
+  background:#f8f9fa;
+}
+
+.goni-summary-table td:nth-child(2) {
+  text-align:center;
+  font-weight:700;
+  font-size:15px;
+  color:var(--primary);
+  background:#f0f7ff;
+}
+
+.goni-summary-table td:nth-child(3) {
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  width:80px;
+}
+
+.goni-summary-table .profit-row td {
+  background:#f9a825;
+  color:white;
+  font-weight:800;
+  font-size:15px;
+}
+
+.goni-summary-table .profit-label-row td {
+  text-align:center;
+  font-size:14px;
+  font-weight:700;
+  color:var(--primary);
+  background:#f0f7ff;
+  padding:12px;
+}
+
+/* price inputs in summary */
+.price-input {
+  border:1.5px solid var(--border);
+  border-radius:6px;
+  padding:6px 10px;
+  font-size:14px;
+  font-family:inherit;
+  width:110px;
+  text-align:center;
+  outline:none;
+  color:var(--text);
+  background:#fff;
+  transition:border-color .2s;
+}
+
+.price-input:focus { border-color:var(--accent); }
+
+/* ===== EMPLOYEE PAGE ===== */
+.emp-controls {
+  padding:16px 20px;
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  align-items:center;
+  border-bottom:1px solid var(--border);
+}
+
+.emp-controls input[type=text] {
+  border:1.5px solid var(--border);
+  border-radius:8px;
+  padding:8px 14px;
+  font-size:13px;
+  font-family:inherit;
+  outline:none;
+  width:220px;
+  transition:border-color .2s;
+}
+
+.emp-controls input:focus { border-color:var(--accent2); }
+
+.btn-add {
+  background:var(--primary);
+  color:white;
+  border:none;
+  border-radius:8px;
+  padding:9px 18px;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  font-family:inherit;
+  transition:all .2s;
+}
+
+.btn-add:hover { background:var(--primary-light); transform:translateY(-1px); }
+
+.btn-del {
+  background:#ffebee;
+  color:var(--red);
+  border:1px solid #ffcdd2;
+  border-radius:6px;
+  padding:4px 10px;
+  font-size:12px;
+  cursor:pointer;
+  font-family:inherit;
+  transition:all .2s;
+}
+
+.btn-del:hover { background:#ffcdd2; }
+
+/* Attendance table */
+.att-wrap { overflow-x:auto; padding:0; }
+
+table.att-table {
+  width:100%;
+  border-collapse:collapse;
+  font-size:12px;
+}
+
+table.att-table thead tr:first-child th {
+  background:#1e4976;
+  color:white;
+  padding:8px 6px;
+  text-align:center;
+  border-right:1px solid rgba(255,255,255,0.15);
+  white-space:nowrap;
+  position:sticky;
+  top:0;
+  z-index:2;
+}
+
+table.att-table thead tr:first-child th:nth-child(-n+3) {
+  min-width:50px;
+}
+
+table.att-table thead tr:first-child th.day-th {
+  min-width:30px;
+  font-size:11px;
+}
+
+table.att-table tbody td {
+  border:1px solid #e0e6ef;
+  padding:5px 4px;
+  text-align:center;
+  vertical-align:middle;
+}
+
+table.att-table tbody td:first-child {
+  font-weight:700;
+  color:var(--primary);
+  background:#f0f7ff;
+  width:40px;
+}
+
+table.att-table tbody td:nth-child(2) {
+  text-align:left;
+  padding-left:10px;
+  font-weight:600;
+  font-size:12.5px;
+  background:#f8fafd;
+  min-width:140px;
+}
+
+.att-check {
+  width:24px; height:24px;
+  cursor:pointer;
+  accent-color:var(--green);
+  transform:scale(1.1);
+}
+
+table.att-table .footer-row td {
+  background:#f0f4f8;
+  font-weight:700;
+  font-size:12px;
+  color:var(--text);
+  border-top:2px solid var(--primary);
+  padding:6px 4px;
+}
+
+table.att-table .footer-row td:nth-child(2) {
+  text-align:left;
+  padding-left:10px;
+  background:#e8f0f8;
+  color:var(--primary);
+  font-size:12px;
+}
+
+.present-count { color:var(--green); font-weight:700; }
+.absent-count  { color:var(--red);   font-weight:700; }
+
+.salary-input {
+  border:1px solid var(--border);
+  border-radius:5px;
+  padding:4px 6px;
+  font-size:12px;
+  font-family:inherit;
+  width:80px;
+  text-align:center;
+  outline:none;
+  background:#fffde7;
+  transition:border-color .2s;
+}
+
+.salary-input:focus { border-color:var(--accent); }
+
+/* ===== SUMMARY STATS CARDS ===== */
+.stats-row {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+  margin-bottom:20px;
+}
+
+@media(max-width:800px){ .stats-row { grid-template-columns:1fr 1fr; } }
+
+.stat-card {
+  background:white;
+  border-radius:12px;
+  padding:16px 18px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.06);
+  border-left:4px solid var(--accent);
+}
+
+.stat-card.green { border-left-color:var(--green); }
+.stat-card.red   { border-left-color:var(--red); }
+.stat-card.blue  { border-left-color:var(--accent2); }
+
+.stat-card .s-label {
+  font-size:11.5px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+  font-weight:600;
+  font-family:'Noto Sans Devanagari', sans-serif;
+}
+
+.stat-card .s-value {
+  font-size:26px;
+  font-weight:700;
+  color:var(--primary);
+  margin-top:4px;
+  line-height:1;
+}
+
+.stat-card .s-sub {
+  font-size:11px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+/* PROFIT display */
+.profit-display {
+  text-align:center;
+  padding:16px 20px;
+  font-size:16px;
+  font-weight:700;
+  font-family:'Noto Sans Devanagari', sans-serif;
+  border-top:2px solid var(--border);
+}
+
+.profit-display.profit { background:#e8f5e9; color:#2e7d32; }
+.profit-display.loss   { background:#ffebee; color:#c62828; }
+.profit-display.zero   { background:#f5f5f5; color:#555;    }
+
+/* mini goni table inside cards */
+.mini-goni-table td { padding:7px 10px; font-size:12.5px; }
+.mini-goni-table td:nth-child(2) { font-size:13px; }
+.mini-goni-table .profit-row td { font-size:13px; }
+.mini-goni-table .profit-label-row td { font-size:12px; padding:8px 10px; }
+
+/* Buttons */
+.btn-print {
+  background:var(--accent2);
+  color:white;
+  border:none;
+  border-radius:8px;
+  padding:9px 18px;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  font-family:inherit;
+  transition:all .2s;
+  margin-left:auto;
+}
+
+.btn-print:hover { background:#0096b7; transform:translateY(-1px); }
+
+/* Responsive */
+@media(max-width:600px){
+  .topbar-nav .nav-btn span { display:none; }
+  .summary-grid { grid-template-columns:1fr; }
+  .stats-row { grid-template-columns:1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- =================== LOGIN PAGE =================== -->
+<div class="page active" id="loginPage">
+
+  <!-- Animated orbs -->
+  <div class="login-orb o1"></div>
+  <div class="login-orb o2"></div>
+  <div class="login-orb o3"></div>
+
+  <!-- Floating particles canvas -->
+  <canvas id="loginCanvas"></canvas>
+
+  <div class="login-wrap">
+
+    <!-- LEFT: Branding -->
+    <div class="login-left">
+      <div class="brand-icon">📋</div>
+      <h2>कांड्डी<br>सॉफ्टवेअर</h2>
+      <p class="tagline">गोणी व्यवस्थापन | कर्मचारी हजेरी<br>नफा-तोटा | WhatsApp Payment</p>
+
+      <div class="login-features">
+        <div class="login-feature-item"><span class="fi">📦</span> दैनिक कांड्डी नोंद</div>
+        <div class="login-feature-item"><span class="fi">📊</span> महिना हिशोब व नफा-तोटा</div>
+        <div class="login-feature-item"><span class="fi">👷</span> कर्मचारी हजेरी व पगार</div>
+        <div class="login-feature-item"><span class="fi">💬</span> WhatsApp & UPI Payment</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Form -->
+    <div class="login-right">
+      <h3>स्वागत आहे! 🙏</h3>
+      <p class="sub">आपल्या account मध्ये login करा</p>
+
+      <div class="login-error" id="loginError">⚠️ चुकीचा Username किंवा Password</div>
+
+      <div class="lf-group">
+        <label>Username / युजरनेम</label>
+        <div class="lf-input-wrap">
+          <span class="lf-icon">👤</span>
+          <input type="text" id="loginUser" placeholder="admin टाका..." value="admin">
+        </div>
+      </div>
+
+      <div class="lf-group">
+        <label>Password / पासवर्ड</label>
+        <div class="lf-input-wrap">
+          <span class="lf-icon">🔒</span>
+          <input type="password" id="loginPass" placeholder="पासवर्ड टाका..." value="1234">
+        </div>
+      </div>
+
+      <button class="btn-login" onclick="doLogin()">🔐 Login करा</button>
+
+      <p class="login-hint">Default: admin / 1234</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- =================== APP SHELL =================== -->
+<div id="appShell">
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-brand">
+      <div class="t-icon">📋</div>
+      कांड्डी सॉफ्टवेअर
+    </div>
+    <div class="topbar-nav">
+      <button class="nav-btn active" id="nb-2" onclick="showSection('kanddi')">📦 <span>कांड्डी नोंद</span></button>
+      <button class="nav-btn" id="nb-3" onclick="showSection('summary')">📊 <span>महिना हिशोब</span></button>
+      <button class="nav-btn" id="nb-4" onclick="showSection('employee')">👷 <span>कर्मचारी हजेरी</span></button>
+      <button class="nav-btn" id="nb-5" onclick="showSection('whatsapp')">💬 <span>WhatsApp Payment</span></button>
+    </div>
+    <div class="topbar-right">
+      <span class="user-pill" id="userPill">👤 admin</span>
+      <button class="btn-logout" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="app-content">
+
+    <!-- Month Bar (shared) -->
+    <div class="month-bar">
+      <label>महिना:</label>
+      <select id="selMonth" onchange="onMonthChange()">
+        <option value="1">जानेवारी</option>
+        <option value="2">फेब्रुवारी</option>
+        <option value="3">मार्च</option>
+        <option value="4">एप्रिल</option>
+        <option value="5">मे</option>
+        <option value="6">जून</option>
+        <option value="7">जुलै</option>
+        <option value="8">ऑगस्ट</option>
+        <option value="9">सप्टेंबर</option>
+        <option value="10">ऑक्टोबर</option>
+        <option value="11">नोव्हेंबर</option>
+        <option value="12">डिसेंबर</option>
+      </select>
+      <label>वर्ष:</label>
+      <input type="number" id="selYear" value="2026" min="2020" max="2035" style="width:90px" onchange="onMonthChange()">
+      <div class="month-title" id="monthTitle">—</div>
+      <button class="btn-print" onclick="window.print()">🖨️ Print</button>
+    </div>
+
+    <!-- ===== SECTION: KANDDI ===== -->
+    <div id="sec-kanddi">
+      <div class="stats-row" id="kanddi-stats">
+        <div class="stat-card"><div class="s-label">एकूण कांड्डी</div><div class="s-value" id="st-kandi">0</div><div class="s-sub">गोण्या</div></div>
+        <div class="stat-card blue"><div class="s-label">एकूण पन्ना</div><div class="s-value" id="st-panna">0</div><div class="s-sub">गोण्या</div></div>
+        <div class="stat-card green"><div class="s-label">एकूण कमांदर</div><div class="s-value" id="st-kam">0</div><div class="s-sub">गोण्या</div></div>
+        <div class="stat-card red"><div class="s-label">एकूण पेंड</div><div class="s-value" id="st-pend">0</div><div class="s-sub">गोण्या</div></div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header">📦 कांड्डी नोंद पुस्तक — दैनिक नोंद (1 ते 30)</div>
+        <div class="kanddi-table-wrap">
+          <table class="kanddi-table" id="kanddiTable">
+            <thead>
+              <tr>
+                <th>दिनांक</th>
+                <th>वार</th>
+                <th>कांड्डी 🟡</th>
+                <th>पन्ना 🔵</th>
+                <th>कमांदर 🟢</th>
+                <th>पेंड 🔴</th>
+                <th>एकूण ✅</th>
+              </tr>
+            </thead>
+            <tbody id="kanddiBody"></tbody>
+            <tfoot>
+              <tr class="total-row">
+                <td colspan="2">एकूण बेरीज</td>
+                <td id="tot-kandi">0</td>
+                <td id="tot-panna">0</td>
+                <td id="tot-kam">0</td>
+                <td id="tot-pend">0</td>
+                <td id="tot-all">0</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SECTION: SUMMARY ===== -->
+    <div id="sec-summary" style="display:none">
+
+      <!-- Goni Summary Big Table -->
+      <div class="section-card">
+        <div class="section-header">📦 महिना हिशोब (Goni Summary)</div>
+        <div style="padding:20px 24px;">
+          <table class="goni-summary-table" id="goniSummaryTable">
+            <tbody>
+              <tr>
+                <td>एकूण गोणी आणल्या (Month)</td>
+                <td id="gs-total">0</td>
+                <td>गोणी (Auto)</td>
+              </tr>
+              <tr>
+                <td>१ गोणीची खरेदी किंमत (Real Price)</td>
+                <td><input class="price-input" type="number" id="gs-buy" value="1500" oninput="calcGoni()"></td>
+                <td>₹</td>
+              </tr>
+              <tr>
+                <td>१ गोणीची विक्री किंमत (Sell Price)</td>
+                <td><input class="price-input" type="number" id="gs-sell" value="1600" oninput="calcGoni()"></td>
+                <td>₹</td>
+              </tr>
+              <tr>
+                <td><b>एकूण खरेदी रक्कम (Total Cost)</b></td>
+                <td id="gs-cost">0</td>
+                <td>₹</td>
+              </tr>
+              <tr>
+                <td><b>एकूण विक्री रक्कम (Total Revenue)</b></td>
+                <td id="gs-rev">0</td>
+                <td>₹</td>
+              </tr>
+              <tr class="profit-row">
+                <td>नफा / तोटा (Profit / Loss)</td>
+                <td id="gs-profit">0</td>
+                <td>₹</td>
+              </tr>
+              <tr class="profit-label-row">
+                <td colspan="3" id="gs-label">— ना नफा ना तोटा</td>
+              </tr>
+              <tr>
+                <td>प्रति गोणी नफा / तोटा</td>
+                <td id="gs-per">0</td>
+                <td>₹/गोणी</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4 separate full goni summary tables -->
+      <div class="summary-grid">
+
+        <!-- KANDDI -->
+        <div class="summary-mini-card">
+          <div class="summary-mini-header">🟡 कांड्डी — Goni Summary</div>
+          <div style="padding:12px 16px;">
+            <table class="goni-summary-table mini-goni-table">
+              <tbody>
+                <tr><td>एकूण गोणी (Month)</td><td id="mg-k-total">0</td><td>गोणी</td></tr>
+                <tr><td>खरेदी किंमत</td><td><input class="price-input" type="number" id="mg-k-buy" value="1500" oninput="calcMiniGoni('k')" style="width:90px"></td><td>₹</td></tr>
+                <tr><td>विक्री किंमत</td><td><input class="price-input" type="number" id="mg-k-sell" value="1600" oninput="calcMiniGoni('k')" style="width:90px"></td><td>₹</td></tr>
+                <tr><td><b>एकूण खरेदी रक्कम</b></td><td id="mg-k-cost">0</td><td>₹</td></tr>
+                <tr><td><b>एकूण विक्री रक्कम</b></td><td id="mg-k-rev">0</td><td>₹</td></tr>
+                <tr class="profit-row" id="mg-k-prow"><td>नफा / तोटा</td><td id="mg-k-profit">0</td><td>₹</td></tr>
+                <tr class="profit-label-row"><td colspan="3" id="mg-k-label">— ना नफा ना तोटा</td></tr>
+                <tr><td>प्रति गोणी नफा/तोटा</td><td id="mg-k-per">0</td><td>₹/गोणी</td></tr>
+              </tbody>
+            </table>
+            <div style="margin-top:10px;border-top:1px solid #eee;padding-top:8px;">
+              <div style="font-size:12px;font-weight:700;color:#1e4976;margin-bottom:6px;">📅 दिवसवार नोंद</div>
+              <table class="summary-mini-table" id="mini-kandi"></table>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANNA -->
+        <div class="summary-mini-card">
+          <div class="summary-mini-header">🔵 पन्ना — Goni Summary</div>
+          <div style="padding:12px 16px;">
+            <table class="goni-summary-table mini-goni-table">
+              <tbody>
+                <tr><td>एकूण गोणी (Month)</td><td id="mg-p-total">0</td><td>गोणी</td></tr>
+                <tr><td>खरेदी किंमत</td><td><input class="price-input" type="number" id="mg-p-buy" value="1500" oninput="calcMiniGoni('p')" style="width:90px"></td><td>₹</td></tr>
+                <tr><td>विक्री किंमत</td><td><input class="price-input" type="number" id="mg-p-sell" value="1600" oninput="calcMiniGoni('p')" style="width:90px"></td><td>₹</td></tr>
+                <tr><td><b>एकूण खरेदी रक्कम</b></td><td id="mg-p-cost">0</td><td>₹</td></tr>
+                <tr><td><b>एकूण विक्री रक्कम</b></td><td id="mg-p-rev">0</td><td>₹</td></tr>
+                <tr class="profit-row" id="mg-p-prow"><td>नफा / तोटा</td><td id="mg-p-profit">0</td><td>₹</td></tr>
+                <tr class="profit-label-row"><td colspan="3" id="mg-p-label">— ना नफा ना तोटा</td></tr>
+                <tr><td>प्रति गोणी नफा/तोटा</td><td id="mg-p-per">0</td><td>₹/गोणी</td></tr>
+              </tbody>
+            </table>
+            <div style="margin-top:10px;border-top:1px solid #eee;padding-top:8px;">
+              <div style="font-size:12px;font-weight:700;color:#1e4976;margin-bottom:6px;">📅 दिवसवार नोंद</div>
+              <table class="summary-mini-table" id="mini-panna"></table>
+            </div>
+          </div>
+        </div>
+
+        <!-- KAMANDAR -->
+        <div class="summary-mini-card">
+          <div class="summary-mini-header">🟢 कमांदर — Goni Summary</div>
+          <div style="padding:12px 16px;">
+            <table class="goni-summary-table mini-goni-table">
+              <tbody>
+                <tr><td>एकूण गोणी (Month)</td><td id="mg-km-total">0</td><td>गोणी</td></tr>
+                <tr><td>खरेदी किंमत</td><td><input class="price-input" type="number" id="mg-km-buy" value="1500" oninput="calcMiniGoni('km')" style="width:90px"></td><td>₹</td></tr>
+                <tr><td>विक्री किंमत</td><td><input class="price-input" type="number" id="mg-km-sell" value="1600" oninput="calcMiniGoni('km')" style="width:90px"></td><td>₹</td></tr>
+                <tr><td><b>एकूण खरेदी रक्कम</b></td><td id="mg-km-cost">0</td><td>₹</td></tr>
+                <tr><td><b>एकूण विक्री रक्कम</b></td><td id="mg-km-rev">0</td><td>₹</td></tr>
+                <tr class="profit-row" id="mg-km-prow"><td>नफा / तोटा</td><td id="mg-km-profit">0</td><td>₹</td></tr>
+                <tr class="profit-label-row"><td colspan="3" id="mg-km-label">— ना नफा ना तोटा</td></tr>
+                <tr><td>प्रति गोणी नफा/तोटा</td><td id="mg-km-per">0</td><td>₹/गोणी</td></tr>
+              </tbody>
+            </table>
+            <div style="margin-top:10px;border-top:1px solid #eee;padding-top:8px;">
+              <div style="font-size:12px;font-weight:700;color:#1e4976;margin-bottom:6px;">📅 दिवसवार नोंद</div>
+              <table class="summary-mini-table" id="mini-kam"></table>
+            </div>
+          </div>
+        </div>
+
+        <!-- PEND -->
+        <div class="summary-mini-card">
+          <div class="summary-mini-header">🔴 पेंड — Goni Summary</div>
+          <div style="padding:12px 16px;">
+            <table class="goni-summary-table mini-goni-table">
+              <tbody>
+                <tr><td>एकूण गोणी (Month)</td><td id="mg-pe-total">0</td><td>गोणी</td></tr>
+                <tr><td>खरेदी किंमत</td><td><input class="price-input" type="number" id="mg-pe-buy" value="1500" oninput="calcMiniGoni('pe')" style="width:90px"></td><td>₹</td></tr>
+                <tr><td>विक्री किंमत</td><td><input class="price-input" type="number" id="mg-pe-sell" value="1600" oninput="calcMiniGoni('pe')" style="width:90px"></td><td>₹</td></tr>
+                <tr><td><b>एकूण खरेदी रक्कम</b></td><td id="mg-pe-cost">0</td><td>₹</td></tr>
+                <tr><td><b>एकूण विक्री रक्कम</b></td><td id="mg-pe-rev">0</td><td>₹</td></tr>
+                <tr class="profit-row" id="mg-pe-prow"><td>नफा / तोटा</td><td id="mg-pe-profit">0</td><td>₹</td></tr>
+                <tr class="profit-label-row"><td colspan="3" id="mg-pe-label">— ना नफा ना तोटा</td></tr>
+                <tr><td>प्रति गोणी नफा/तोटा</td><td id="mg-pe-per">0</td><td>₹/गोणी</td></tr>
+              </tbody>
+            </table>
+            <div style="margin-top:10px;border-top:1px solid #eee;padding-top:8px;">
+              <div style="font-size:12px;font-weight:700;color:#1e4976;margin-bottom:6px;">📅 दिवसवार नोंद</div>
+              <table class="summary-mini-table" id="mini-pend"></table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ===== SECTION: EMPLOYEE ===== -->
+    <div id="sec-employee" style="display:none">
+      <div class="section-card">
+        <div class="section-header">👷 कर्मचारी हजेरी (Employee Attendance)</div>
+
+        <div class="emp-controls">
+          <input type="text" id="empNameInput" placeholder="कर्मचाऱ्याचे नाव...">
+          <input type="tel" id="empPhoneInput" placeholder="📱 WhatsApp नं. (10 अंक)" maxlength="10" style="width:180px;">
+          <input type="text" id="empUpiInput" placeholder="💳 UPI ID (name@bank)" style="width:200px;">
+          <button class="btn-add" onclick="addEmployee()">➕ कर्मचारी जोडा</button>
+          <span style="font-size:12px; color:var(--muted); margin-left:4px;">✅ = उपस्थित | रिकामे = अनुपस्थित</span>
+        </div>
+
+        <div class="att-wrap">
+          <table class="att-table" id="attTable">
+            <thead>
+              <tr id="attHeaderRow"></tr>
+            </thead>
+            <tbody id="attBody"></tbody>
+            <tfoot id="attFoot"></tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SECTION: WHATSAPP PAYMENT ===== -->
+    <div id="sec-whatsapp" style="display:none">
+
+      <!-- Summary cards -->
+      <div class="stats-row" id="wp-stats-row" style="margin-bottom:16px;"></div>
+
+      <div class="section-card">
+        <div class="section-header">💬 WhatsApp Payment — कर्मचारी पगार पाठवा</div>
+
+        <div style="padding:16px 20px; border-bottom:1px solid var(--border); display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+          <span style="font-size:13px;color:var(--muted);">✅ उपस्थित दिवसांनुसार पगार आपोआप calculate होतो</span>
+          <button class="btn-print" style="margin-left:auto;" onclick="sendAllWhatsApp()">📤 सर्वांना WhatsApp पाठवा</button>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;font-size:13px;" id="wpTable">
+            <thead>
+              <tr style="background:#1e4976;color:white;">
+                <th style="padding:10px 14px;text-align:center;font-size:12px;border-right:1px solid rgba(255,255,255,0.15);">नं.</th>
+                <th style="padding:10px 14px;text-align:left;font-size:12px;border-right:1px solid rgba(255,255,255,0.15);">कर्मचारी नाव</th>
+                <th style="padding:10px 14px;text-align:center;font-size:12px;border-right:1px solid rgba(255,255,255,0.15);">📱 WhatsApp नं.</th>
+                <th style="padding:10px 14px;text-align:center;font-size:12px;border-right:1px solid rgba(255,255,255,0.15);">💳 UPI ID</th>
+                <th style="padding:10px 14px;text-align:center;font-size:12px;border-right:1px solid rgba(255,255,255,0.15);">✅ उपस्थित</th>
+                <th style="padding:10px 14px;text-align:center;font-size:12px;border-right:1px solid rgba(255,255,255,0.15);">❌ अनुपस्थित</th>
+                <th style="padding:10px 14px;text-align:center;font-size:12px;border-right:1px solid rgba(255,255,255,0.15);">💰 मासिक पगार</th>
+                <th style="padding:10px 14px;text-align:center;font-size:12px;border-right:1px solid rgba(255,255,255,0.15);">💵 देय पगार</th>
+                <th style="padding:10px 14px;text-align:center;font-size:12px;">📤 Payment</th>
+              </tr>
+            </thead>
+            <tbody id="wpBody"></tbody>
+            <tfoot id="wpFoot"></tfoot>
+          </table>
+        </div>
+
+        <!-- No employees msg -->
+        <div id="wpEmpty" style="display:none;padding:32px;text-align:center;color:var(--muted);font-size:14px;">
+          ⚠️ कर्मचारी हजेरी पेज वर आधी कर्मचारी जोडा
+        </div>
+      </div>
+
+      <!-- Payment message preview -->
+      <div class="section-card" id="wpPreviewCard" style="display:none;">
+        <div class="section-header">👁️ WhatsApp Message Preview</div>
+        <div style="padding:20px;">
+          <div id="wpPreviewBox" style="background:#e9f5fe;border-radius:12px;padding:18px 20px;font-size:13.5px;line-height:1.8;white-space:pre-wrap;font-family:'Noto Sans Devanagari',sans-serif;color:#1a2640;border:1px solid #b3d9f7;max-width:480px;"></div>
+          <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;">
+            <button id="wpSendBtn" onclick="openWA()" style="background:#25D366;color:white;border:none;border-radius:8px;padding:10px 22px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              WhatsApp उघडा
+            </button>
+            <button onclick="copyWAMsg()" style="background:#f5f5f5;color:#333;border:1px solid #ddd;border-radius:8px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;">📋 Message Copy करा</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div><!-- end app-content -->
+</div><!-- end appShell -->
+
+<script>
+// ============ STATE ============
+let currentUser = 'admin';
+let currentSection = 'kanddi';
+let daysInMonth = 30;
+let monthNames = ['','जानेवारी','फेब्रुवारी','मार्च','एप्रिल','मे','जून','जुलै','ऑगस्ट','सप्टेंबर','ऑक्टोबर','नोव्हेंबर','डिसेंबर'];
+let dayNames = ['रवि','सोम','मंगळ','बुध','गुरु','शुक्र','शनि'];
+
+// kanddi data: [day][col] = value
+let kanddiData = {}; // key: "m-y", value: {day: {k,p,km,pe}}
+let employees = []; // [{name, att:[30 bools], salary:0}]
+let empData = {}; // key: "m-y", value: [...same structure]
+
+// Mini goni prices per product per month-key: {k:{buy,sell}, p:{buy,sell}, km:{buy,sell}, pe:{buy,sell}}
+let miniPrices = {};
+
+// ============ LOCALSTORAGE ============
+function saveAll() {
+  try {
+    localStorage.setItem('kanddi_kanddiData', JSON.stringify(kanddiData));
+    localStorage.setItem('kanddi_empData', JSON.stringify(empData));
+    localStorage.setItem('kanddi_employees', JSON.stringify(employees));
+    localStorage.setItem('kanddi_miniPrices', JSON.stringify(miniPrices));
+    // also save main goni prices per key
+    const key = getKey();
+    const gs = {
+      buy: document.getElementById('gs-buy').value,
+      sell: document.getElementById('gs-sell').value
+    };
+    const allGS = JSON.parse(localStorage.getItem('kanddi_goniPrices')||'{}');
+    allGS[key] = gs;
+    localStorage.setItem('kanddi_goniPrices', JSON.stringify(allGS));
+  } catch(e) {}
+}
+
+function loadAll() {
+  try {
+    const kd = localStorage.getItem('kanddi_kanddiData');
+    if (kd) kanddiData = JSON.parse(kd);
+    const ed = localStorage.getItem('kanddi_empData');
+    if (ed) empData = JSON.parse(ed);
+    const em = localStorage.getItem('kanddi_employees');
+    if (em) employees = JSON.parse(em);
+    const mp = localStorage.getItem('kanddi_miniPrices');
+    if (mp) miniPrices = JSON.parse(mp);
+  } catch(e) {}
+}
+
+function loadGoniPricesForKey(key) {
+  try {
+    const allGS = JSON.parse(localStorage.getItem('kanddi_goniPrices')||'{}');
+    if (allGS[key]) {
+      document.getElementById('gs-buy').value = allGS[key].buy || 1500;
+      document.getElementById('gs-sell').value = allGS[key].sell || 1600;
+    }
+    if (miniPrices[key]) {
+      ['k','p','km','pe'].forEach(col => {
+        if (miniPrices[key][col]) {
+          const b = document.getElementById('mg-'+col+'-buy');
+          const s = document.getElementById('mg-'+col+'-sell');
+          if (b) b.value = miniPrices[key][col].buy || 1500;
+          if (s) s.value = miniPrices[key][col].sell || 1600;
+        }
+      });
+    }
+  } catch(e) {}
+}
+
+function getKey() {
+  const m = document.getElementById('selMonth').value;
+  const y = document.getElementById('selYear').value;
+  return `${m}-${y}`;
+}
+
+function getDaysInMonth(m, y) {
+  return new Date(y, m, 0).getDate();
+}
+
+// ============ LOGIN ============
+function doLogin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value.trim();
+  if ((u==='admin'&&p==='1234') || (u&&p)) {
+    currentUser = u;
+    document.getElementById('loginPage').style.display='none';
+    document.getElementById('appShell').style.display='flex';
+    document.getElementById('userPill').textContent = '👤 ' + u;
+    // init
+    const now = new Date();
+    document.getElementById('selMonth').value = now.getMonth()+1;
+    document.getElementById('selYear').value = now.getFullYear();
+    onMonthChange();
+  } else {
+    document.getElementById('loginError').style.display='block';
+  }
+}
+
+function doLogout() {
+  document.getElementById('loginPage').style.display='flex';
+  document.getElementById('appShell').style.display='none';
+  document.getElementById('loginPass').value='';
+  setTimeout(initLoginParticles, 50);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key==='Enter' && document.getElementById('loginPage').style.display!=='none') doLogin();
+});
+
+// ============ MONTH CHANGE ============
+function onMonthChange() {
+  const m = parseInt(document.getElementById('selMonth').value);
+  const y = parseInt(document.getElementById('selYear').value);
+  daysInMonth = getDaysInMonth(m, y);
+  document.getElementById('monthTitle').textContent = monthNames[m] + ' ' + y;
+  buildKanddiTable();
+  buildAttTable();
+  calcTotals();
+  if (currentSection === 'summary') buildSummary();
+}
+
+// ============ NAV ============
+function showSection(s) {
+  currentSection = s;
+  ['kanddi','summary','employee','whatsapp'].forEach(x=>{
+    const sec = document.getElementById('sec-'+x);
+    if(sec) sec.style.display = x===s?'block':'none';
+    const btnMap = {kanddi:2, summary:3, employee:4, whatsapp:5};
+    const btn = document.getElementById('nb-'+btnMap[x]);
+    if(btn) btn.classList.toggle('active', x===s);
+  });
+  if (s==='summary') buildSummary();
+  if (s==='whatsapp') buildWPTable();
+}
+
+// ============ KANDDI TABLE ============
+function buildKanddiTable() {
+  const m = parseInt(document.getElementById('selMonth').value);
+  const y = parseInt(document.getElementById('selYear').value);
+  const key = getKey();
+  if (!kanddiData[key]) kanddiData[key]={};
+
+  const tbody = document.getElementById('kanddiBody');
+  tbody.innerHTML='';
+
+  for (let d=1; d<=daysInMonth; d++) {
+    if (!kanddiData[key][d]) kanddiData[key][d]={k:'',p:'',km:'',pe:''};
+    const dt = new Date(y,m-1,d);
+    const dn = dayNames[dt.getDay()];
+    const row = document.createElement('tr');
+    row.innerHTML=`
+      <td class="date-cell">${d} ${monthNames[m].substring(0,3)}</td>
+      <td class="date-cell">${dn}</td>
+      <td><input class="cell-input" type="number" min="0" data-d="${d}" data-col="k" value="${kanddiData[key][d].k}" oninput="onCellInput(this)"></td>
+      <td><input class="cell-input" type="number" min="0" data-d="${d}" data-col="p" value="${kanddiData[key][d].p}" oninput="onCellInput(this)"></td>
+      <td><input class="cell-input" type="number" min="0" data-d="${d}" data-col="km" value="${kanddiData[key][d].km}" oninput="onCellInput(this)"></td>
+      <td><input class="cell-input" type="number" min="0" data-d="${d}" data-col="pe" value="${kanddiData[key][d].pe}" oninput="onCellInput(this)"></td>
+      <td id="row-total-${d}" style="font-weight:700;color:var(--primary);">0</td>
+    `;
+    tbody.appendChild(row);
+    updateRowTotal(key, d);
+  }
+  calcTotals();
+}
+
+function onCellInput(el) {
+  const key = getKey();
+  const d = parseInt(el.dataset.d);
+  const col = el.dataset.col;
+  kanddiData[key][d][col] = parseFloat(el.value)||0;
+  updateRowTotal(key, d);
+  calcTotals();
+  saveAll();
+}
+
+function updateRowTotal(key, d) {
+  const r = kanddiData[key][d];
+  const t = (parseFloat(r.k)||0)+(parseFloat(r.p)||0)+(parseFloat(r.km)||0)+(parseFloat(r.pe)||0);
+  const el = document.getElementById('row-total-'+d);
+  if(el) el.textContent = t||'';
+}
+
+function calcTotals() {
+  const key = getKey();
+  if (!kanddiData[key]) return;
+  let tk=0,tp=0,tkm=0,tpe=0;
+  for(let d=1;d<=daysInMonth;d++){
+    const r=kanddiData[key][d]||{};
+    tk+=(parseFloat(r.k)||0);
+    tp+=(parseFloat(r.p)||0);
+    tkm+=(parseFloat(r.km)||0);
+    tpe+=(parseFloat(r.pe)||0);
+  }
+  const ta=tk+tp+tkm+tpe;
+  document.getElementById('tot-kandi').textContent=tk||0;
+  document.getElementById('tot-panna').textContent=tp||0;
+  document.getElementById('tot-kam').textContent=tkm||0;
+  document.getElementById('tot-pend').textContent=tpe||0;
+  document.getElementById('tot-all').textContent=ta||0;
+  document.getElementById('st-kandi').textContent=tk;
+  document.getElementById('st-panna').textContent=tp;
+  document.getElementById('st-kam').textContent=tkm;
+  document.getElementById('st-pend').textContent=tpe;
+}
+
+// ============ SUMMARY ============
+function buildSummary() {
+  const key = getKey();
+  calcTotals();
+  loadGoniPricesForKey(key);
+
+  // totals
+  let tk=0,tp=0,tkm=0,tpe=0;
+  if(kanddiData[key]) {
+    for(let d=1;d<=daysInMonth;d++){
+      const r=kanddiData[key][d]||{};
+      tk+=(parseFloat(r.k)||0);
+      tp+=(parseFloat(r.p)||0);
+      tkm+=(parseFloat(r.km)||0);
+      tpe+=(parseFloat(r.pe)||0);
+    }
+  }
+  const totalGoni = tk+tp+tkm+tpe;
+  document.getElementById('gs-total').textContent = totalGoni;
+  calcGoni();
+
+  // mini tables
+  buildMiniTable('mini-kandi', key, 'k', 'कांड्डी');
+  buildMiniTable('mini-panna', key, 'p', 'पन्ना');
+  buildMiniTable('mini-kam',   key, 'km','कमांदर');
+  buildMiniTable('mini-pend',  key, 'pe','पेंड');
+
+  // calc each mini goni summary
+  ['k','p','km','pe'].forEach(col => calcMiniGoni(col));
+}
+
+function calcGoni() {
+  const total = parseInt(document.getElementById('gs-total').textContent)||0;
+  const buy   = parseFloat(document.getElementById('gs-buy').value)||0;
+  const sell  = parseFloat(document.getElementById('gs-sell').value)||0;
+  const cost  = total*buy;
+  const rev   = total*sell;
+  const profit= rev-cost;
+  const per   = sell-buy;
+
+  document.getElementById('gs-cost').textContent   = cost.toLocaleString('en-IN');
+  document.getElementById('gs-rev').textContent    = rev.toLocaleString('en-IN');
+  document.getElementById('gs-profit').textContent = Math.abs(profit).toLocaleString('en-IN');
+  document.getElementById('gs-per').textContent    = per;
+
+  const row = document.querySelector('.profit-row');
+  const lbl = document.getElementById('gs-label');
+  if(profit>0){
+    row.style.background='#f9a825'; row.style.color='white';
+    lbl.textContent='✅ नफा झाला: ₹'+ profit.toLocaleString('en-IN')+' (प्रति गोणी ₹'+per+' नफा)';
+    lbl.parentElement.style.background='#e8f5e9'; lbl.style.color='#2e7d32';
+  } else if(profit<0){
+    row.style.background='#c62828'; row.style.color='white';
+    lbl.textContent='❌ तोटा झाला: ₹'+Math.abs(profit).toLocaleString('en-IN')+'  (प्रति गोणी ₹'+Math.abs(per)+' तोटा)';
+    lbl.parentElement.style.background='#ffebee'; lbl.style.color='#c62828';
+  } else {
+    row.style.background='#f9a825'; row.style.color='white';
+    lbl.textContent='➖ ना नफा ना तोटा';
+    lbl.parentElement.style.background='#f5f5f5'; lbl.style.color='#555';
+  }
+  saveAll();
+}
+
+// colMap: k=कांड्डी, p=पन्ना, km=कमांदर, pe=पेंड
+function calcMiniGoni(col) {
+  const key = getKey();
+  // get total for this col
+  let tot = 0;
+  if (kanddiData[key]) {
+    for (let d=1; d<=daysInMonth; d++) {
+      tot += parseFloat((kanddiData[key][d]||{})[col])||0;
+    }
+  }
+  const buyEl  = document.getElementById('mg-'+col+'-buy');
+  const sellEl = document.getElementById('mg-'+col+'-sell');
+  const buy    = parseFloat(buyEl.value)||0;
+  const sell   = parseFloat(sellEl.value)||0;
+  const cost   = tot * buy;
+  const rev    = tot * sell;
+  const profit = rev - cost;
+  const per    = sell - buy;
+
+  document.getElementById('mg-'+col+'-total').textContent  = tot;
+  document.getElementById('mg-'+col+'-cost').textContent   = cost.toLocaleString('en-IN');
+  document.getElementById('mg-'+col+'-rev').textContent    = rev.toLocaleString('en-IN');
+  document.getElementById('mg-'+col+'-profit').textContent = Math.abs(profit).toLocaleString('en-IN');
+  document.getElementById('mg-'+col+'-per').textContent    = per;
+
+  const prow = document.getElementById('mg-'+col+'-prow');
+  const lbl  = document.getElementById('mg-'+col+'-label');
+  if (profit > 0) {
+    prow.style.background='#f9a825'; prow.style.color='white';
+    lbl.textContent='✅ नफा झाला: ₹'+profit.toLocaleString('en-IN')+' (प्रति गोणी ₹'+per+' नफा)';
+    lbl.parentElement.style.background='#e8f5e9'; lbl.style.color='#2e7d32';
+  } else if (profit < 0) {
+    prow.style.background='#c62828'; prow.style.color='white';
+    lbl.textContent='❌ तोटा झाला: ₹'+Math.abs(profit).toLocaleString('en-IN')+' (प्रति गोणी ₹'+Math.abs(per)+' तोटा)';
+    lbl.parentElement.style.background='#ffebee'; lbl.style.color='#c62828';
+  } else {
+    prow.style.background='#f9a825'; prow.style.color='white';
+    lbl.textContent='➖ ना नफा ना तोटा';
+    lbl.parentElement.style.background='#f5f5f5'; lbl.style.color='#555';
+  }
+
+  // save prices
+  if (!miniPrices[key]) miniPrices[key] = {};
+  miniPrices[key][col] = { buy: buy, sell: sell };
+  saveAll();
+}
+
+function buildMiniTable(tblId, key, col, label) {
+  const tbl = document.getElementById(tblId);
+  let html='<thead><tr><th>दिनांक</th><th>'+label+'</th></tr></thead><tbody>';
+  let tot=0;
+  const m=parseInt(document.getElementById('selMonth').value);
+  for(let d=1;d<=daysInMonth;d++){
+    const v=(kanddiData[key]&&kanddiData[key][d])?parseFloat(kanddiData[key][d][col])||0:0;
+    if(v>0){
+      html+=`<tr><td>${d}</td><td>${v}</td></tr>`;
+      tot+=v;
+    }
+  }
+  html+=`<tr><td>एकूण</td><td>${tot}</td></tr></tbody>`;
+  if(tot===0) html='<thead><tr><th>दिनांक</th><th>'+label+'</th></tr></thead><tbody><tr><td colspan="2" style="color:#aaa;padding:14px;font-size:12px;">नोंद नाही</td></tr><tr><td>एकूण</td><td>0</td></tr></tbody>';
+  tbl.innerHTML=html;
+}
+
+// ============ EMPLOYEE ============
+function buildAttTable() {
+  const key=getKey();
+  if(!empData[key]) empData[key]=employees.map(e=>({name:e.name,att:Array(31).fill(false),salary:e.salary||0,phone:e.phone||'',upi:e.upi||''}));
+  renderAttTable();
+}
+
+function addEmployee() {
+  const inp   = document.getElementById('empNameInput');
+  const phone = document.getElementById('empPhoneInput').value.trim();
+  const upi   = document.getElementById('empUpiInput').value.trim();
+  const name  = inp.value.trim();
+  if(!name) return;
+  const key=getKey();
+  if(!empData[key]) empData[key]=[];
+  empData[key].push({name:name, att:Array(31).fill(false), salary:0, phone:phone, upi:upi});
+  employees.push({name:name, salary:0, phone:phone, upi:upi});
+  inp.value='';
+  document.getElementById('empPhoneInput').value='';
+  document.getElementById('empUpiInput').value='';
+  renderAttTable();
+  saveAll();
+}
+
+function renderAttTable() {
+  const m=parseInt(document.getElementById('selMonth').value);
+  const y=parseInt(document.getElementById('selYear').value);
+  const key=getKey();
+  const emps=empData[key]||[];
+
+  // Header
+  const header=document.getElementById('attHeaderRow');
+  let hHTML=`<th>नं.</th><th>कर्मचारी नाव</th><th style="background:#0d5c3a;min-width:130px;">📱 WhatsApp</th><th style="background:#5c3d0d;min-width:150px;">💳 UPI ID</th>`;
+  for(let d=1;d<=daysInMonth;d++){
+    const dt=new Date(y,m-1,d);
+    const isSun=dt.getDay()===0;
+    hHTML+=`<th class="day-th" style="${isSun?'background:#7b1fa2;':'background:#1e4976;'}">${d}</th>`;
+  }
+  hHTML+=`<th>उपस्थित</th><th>अनुपस्थित</th><th>पगार (₹)</th><th>एकूण पगार</th>`;
+  header.innerHTML=hHTML;
+
+  // Body
+  const tbody=document.getElementById('attBody');
+  tbody.innerHTML='';
+  emps.forEach((emp,i)=>{
+    const tr=document.createElement('tr');
+    let tHTML=`<td>${i+1}</td>
+      <td>${emp.name} <button class="btn-del" onclick="delEmployee(${i})">✕</button></td>
+      <td><input type="tel" maxlength="10" value="${emp.phone||''}" placeholder="10 अंक" 
+           style="width:120px;border:1px solid #cde;border-radius:5px;padding:3px 6px;font-size:11.5px;background:#f0fff8;"
+           oninput="onPhoneChange(${i},this)"></td>
+      <td><input type="text" value="${emp.upi||''}" placeholder="name@bank"
+           style="width:140px;border:1px solid #f5ddb0;border-radius:5px;padding:3px 6px;font-size:11.5px;background:#fffbf0;"
+           oninput="onUpiChange(${i},this)"></td>`;
+    for(let d=1;d<=daysInMonth;d++){
+      const chk=emp.att[d]?'checked':'';
+      tHTML+=`<td><input type="checkbox" class="att-check" ${chk} onchange="onAttChange(${i},${d},this)"></td>`;
+    }
+    const present=emp.att.slice(1,daysInMonth+1).filter(Boolean).length;
+    const absent=daysInMonth-present;
+    const totalPay = emp.salary>0 ? Math.round((emp.salary/daysInMonth)*present) : 0;
+    tHTML+=`<td class="present-count">${present}</td>
+            <td class="absent-count">${absent}</td>
+            <td><input class="salary-input" type="number" min="0" value="${emp.salary||''}" placeholder="₹/माह" oninput="onSalaryChange(${i},this)"></td>
+            <td style="font-weight:700;color:var(--primary);background:#f0f7ff;">₹${totalPay.toLocaleString('en-IN')}</td>`;
+    tr.innerHTML=tHTML;
+    tbody.appendChild(tr);
+  });
+
+  // Footer totals
+  const tfoot=document.getElementById('attFoot');
+  if(emps.length===0){ tfoot.innerHTML=''; return; }
+  let fHTML=`<tr class="footer-row"><td colspan="4">दिवसवार एकूण उपस्थित</td>`;
+  for(let d=1;d<=daysInMonth;d++){
+    const cnt=emps.filter(e=>e.att[d]).length;
+    fHTML+=`<td style="color:${cnt>0?'var(--green)':'#ccc'};font-weight:700;">${cnt||''}</td>`;
+  }
+  fHTML+=`<td colspan="4"></td></tr>`;
+  tfoot.innerHTML=fHTML;
+}
+
+function onAttChange(empIdx, day, el) {
+  const key=getKey();
+  empData[key][empIdx].att[day]=el.checked;
+  renderAttTable();
+  saveAll();
+}
+
+function onSalaryChange(empIdx, el) {
+  const key=getKey();
+  empData[key][empIdx].salary = parseFloat(el.value)||0;
+  employees[empIdx].salary = empData[key][empIdx].salary;
+  renderAttTable();
+  saveAll();
+}
+
+function delEmployee(idx) {
+  const key=getKey();
+  empData[key].splice(idx,1);
+  employees.splice(idx,1);
+  renderAttTable();
+  saveAll();
+}
+
+function onPhoneChange(empIdx, el) {
+  const key=getKey();
+  empData[key][empIdx].phone = el.value.trim();
+  if(employees[empIdx]) employees[empIdx].phone = el.value.trim();
+  saveAll();
+}
+
+function onUpiChange(empIdx, el) {
+  const key=getKey();
+  empData[key][empIdx].upi = el.value.trim();
+  if(employees[empIdx]) employees[empIdx].upi = el.value.trim();
+  saveAll();
+}
+
+// ============ WHATSAPP PAYMENT ============
+let wpCurrentMsg  = '';
+let wpCurrentPhone = '';
+
+function buildWPTable() {
+  const key = getKey();
+  const m   = parseInt(document.getElementById('selMonth').value);
+  const y   = parseInt(document.getElementById('selYear').value);
+  const emps = empData[key] || [];
+
+  document.getElementById('wpEmpty').style.display  = emps.length===0 ? 'block' : 'none';
+  document.getElementById('wpTable').style.display  = emps.length===0 ? 'none'  : 'table';
+  document.getElementById('wpPreviewCard').style.display = 'none';
+
+  // Summary stats
+  let totalPay=0, totalPresent=0, totalAbsent=0;
+  emps.forEach(emp=>{
+    const present = emp.att.slice(1,daysInMonth+1).filter(Boolean).length;
+    totalPresent += present;
+    totalAbsent  += (daysInMonth - present);
+    totalPay     += emp.salary>0 ? Math.round((emp.salary/daysInMonth)*present) : 0;
+  });
+  document.getElementById('wp-stats-row').innerHTML = `
+    <div class="stat-card green"><div class="s-label">एकूण कर्मचारी</div><div class="s-value">${emps.length}</div><div class="s-sub">जण</div></div>
+    <div class="stat-card blue"><div class="s-label">एकूण उपस्थित दिवस</div><div class="s-value">${totalPresent}</div><div class="s-sub">दिवस</div></div>
+    <div class="stat-card red"><div class="s-label">एकूण अनुपस्थित दिवस</div><div class="s-value">${totalAbsent}</div><div class="s-sub">दिवस</div></div>
+    <div class="stat-card"><div class="s-label">एकूण देय पगार</div><div class="s-value" style="font-size:20px;">₹${totalPay.toLocaleString('en-IN')}</div><div class="s-sub">या महिन्यासाठी</div></div>
+  `;
+
+  // Table body
+  const tbody = document.getElementById('wpBody');
+  tbody.innerHTML = '';
+  emps.forEach((emp,i)=>{
+    const present  = emp.att.slice(1,daysInMonth+1).filter(Boolean).length;
+    const absent   = daysInMonth - present;
+    const totalPay = emp.salary>0 ? Math.round((emp.salary/daysInMonth)*present) : 0;
+    const hasPhone = emp.phone && emp.phone.length===10;
+    const hasUpi   = emp.upi && emp.upi.trim().length>3;
+
+    const tr = document.createElement('tr');
+    tr.style.background = i%2===0 ? '#fff' : '#f8fafd';
+    tr.innerHTML = `
+      <td style="padding:10px 12px;text-align:center;font-weight:700;color:var(--primary);border:1px solid #e8ecf2;">${i+1}</td>
+      <td style="padding:10px 12px;font-weight:600;border:1px solid #e8ecf2;">${emp.name}</td>
+      <td style="padding:8px 10px;text-align:center;border:1px solid #e8ecf2;">
+        ${hasPhone
+          ? `<span style="color:#0d5c3a;font-weight:600;">📱 ${emp.phone}</span>`
+          : `<span style="color:#f57c00;font-size:11px;">⚠️ नं. नाही</span>`}
+      </td>
+      <td style="padding:8px 10px;text-align:center;border:1px solid #e8ecf2;">
+        ${hasUpi
+          ? `<span style="color:#5c3d0d;font-weight:600;font-size:12px;">💳 ${emp.upi}</span>`
+          : `<span style="color:#f57c00;font-size:11px;">⚠️ UPI नाही</span>`}
+      </td>
+      <td style="padding:10px 12px;text-align:center;font-weight:700;color:var(--green);border:1px solid #e8ecf2;">${present}</td>
+      <td style="padding:10px 12px;text-align:center;font-weight:700;color:var(--red);border:1px solid #e8ecf2;">${absent}</td>
+      <td style="padding:10px 12px;text-align:center;border:1px solid #e8ecf2;">₹${(emp.salary||0).toLocaleString('en-IN')}</td>
+      <td style="padding:10px 12px;text-align:center;font-weight:800;font-size:15px;color:var(--primary);background:#f0f7ff;border:1px solid #e8ecf2;">₹${totalPay.toLocaleString('en-IN')}</td>
+      <td style="padding:8px 10px;text-align:center;border:1px solid #e8ecf2;">
+        <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">
+          ${hasUpi ? `<button onclick="openUpiPay(${i})" style="background:#FF9800;color:white;border:none;border-radius:7px;padding:6px 10px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;">💳 UPI Pay</button>` : ''}
+          ${hasPhone ? `<button onclick="openWAPayMsg(${i})" style="background:#25D366;color:white;border:none;border-radius:7px;padding:6px 10px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="white" style="vertical-align:middle;margin-right:3px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WA</button>` : ''}
+          ${!hasPhone && !hasUpi ? `<span style="font-size:11px;color:#aaa;">माहिती नाही</span>` : ''}
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // Footer
+  const tfoot = document.getElementById('wpFoot');
+  tfoot.innerHTML = emps.length===0 ? '' : `
+    <tr style="background:#1e4976;color:white;font-weight:700;">
+      <td colspan="5" style="padding:10px 14px;font-size:13px;">एकूण बेरीज</td>
+      <td style="padding:10px;text-align:center;font-size:14px;">${totalPresent}</td>
+      <td style="padding:10px;text-align:center;font-size:14px;">${totalAbsent}</td>
+      <td style="padding:10px;text-align:center;"></td>
+      <td style="padding:10px;text-align:center;font-size:15px;">₹${totalPay.toLocaleString('en-IN')}</td>
+      <td></td>
+    </tr>`;
+}
+
+function buildPayMsg(emp, present, absent, totalPay, m, y) {
+  const mn = monthNames[m];
+  const upiLine = emp.upi ? `\n💳 UPI Payment Link:\nupi://pay?pa=${emp.upi}&pn=${encodeURIComponent(emp.name)}&am=${totalPay}&cu=INR&tn=Salary_${mn}_${y}` : '';
+  return `🙏 नमस्कार ${emp.name} जी,
+
+📅 महिना: ${mn} ${y}
+━━━━━━━━━━━━━━━━━━
+✅ उपस्थित दिवस : ${present} दिवस
+❌ अनुपस्थित दिवस: ${absent} दिवस
+💰 मासिक पगार   : ₹${(emp.salary||0).toLocaleString('en-IN')}
+━━━━━━━━━━━━━━━━━━
+💵 देय पगार: ₹${totalPay.toLocaleString('en-IN')}
+━━━━━━━━━━━━━━━━━━
+${emp.upi ? `👇 खालील UPI ID वर payment करा:\n💳 ${emp.upi}` : ''}
+🏭 कांड्डी सॉफ्टवेअर`;
+}
+
+function openWAPayMsg(idx) {
+  const key  = getKey();
+  const m    = parseInt(document.getElementById('selMonth').value);
+  const y    = parseInt(document.getElementById('selYear').value);
+  const emps = empData[key]||[];
+  const emp  = emps[idx];
+  if(!emp) return;
+  const present  = emp.att.slice(1,daysInMonth+1).filter(Boolean).length;
+  const absent   = daysInMonth - present;
+  const totalPay = emp.salary>0 ? Math.round((emp.salary/daysInMonth)*present) : 0;
+
+  const msg = buildPayMsg(emp, present, absent, totalPay, m, y);
+  wpCurrentMsg   = msg;
+  wpCurrentPhone = '91' + emp.phone;
+
+  document.getElementById('wpPreviewBox').textContent = msg;
+  document.getElementById('wpPreviewCard').style.display = 'block';
+  document.getElementById('wpPreviewCard').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function openUpiPay(idx) {
+  const key  = getKey();
+  const m    = parseInt(document.getElementById('selMonth').value);
+  const y    = parseInt(document.getElementById('selYear').value);
+  const emps = empData[key]||[];
+  const emp  = emps[idx];
+  if(!emp || !emp.upi) return;
+  const present  = emp.att.slice(1,daysInMonth+1).filter(Boolean).length;
+  const totalPay = emp.salary>0 ? Math.round((emp.salary/daysInMonth)*present) : 0;
+  const mn = monthNames[m];
+  const upiUrl = `upi://pay?pa=${encodeURIComponent(emp.upi)}&pn=${encodeURIComponent(emp.name)}&am=${totalPay}&cu=INR&tn=${encodeURIComponent('Salary '+mn+' '+y)}`;
+  window.location.href = upiUrl;
+}
+
+function openWA() {
+  if(!wpCurrentPhone || !wpCurrentMsg) return;
+  const url = `https://wa.me/${wpCurrentPhone}?text=${encodeURIComponent(wpCurrentMsg)}`;
+  window.open(url, '_blank');
+}
+
+function copyWAMsg() {
+  if(!wpCurrentMsg) return;
+  navigator.clipboard.writeText(wpCurrentMsg).then(()=>{
+    alert('✅ Message copy झाला!');
+  }).catch(()=>{
+    const ta = document.createElement('textarea');
+    ta.value = wpCurrentMsg;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('✅ Message copy झाला!');
+  });
+}
+
+function sendAllWhatsApp() {
+  const key  = getKey();
+  const m    = parseInt(document.getElementById('selMonth').value);
+  const y    = parseInt(document.getElementById('selYear').value);
+  const emps = empData[key]||[];
+  const withPhone = emps.filter(e=>e.phone&&e.phone.length===10);
+  if(withPhone.length===0){ alert('⚠️ एकाही कर्मचाऱ्याचा WhatsApp नं. नाही!\nकृपया हजेरी page वर नं. जोडा.'); return; }
+  let idx=0;
+  function sendNext(){
+    if(idx>=withPhone.length) return;
+    const emp = withPhone[idx];
+    const present  = emp.att.slice(1,daysInMonth+1).filter(Boolean).length;
+    const absent   = daysInMonth - present;
+    const totalPay = emp.salary>0 ? Math.round((emp.salary/daysInMonth)*present) : 0;
+    const msg = buildPayMsg(emp, present, absent, totalPay, m, y);
+    const url = `https://wa.me/91${emp.phone}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+    idx++;
+    if(idx<withPhone.length){
+      setTimeout(sendNext, 1500);
+    }
+  }
+  if(confirm(`${withPhone.length} कर्मचाऱ्यांना WhatsApp message पाठवायचा आहे का?`)) sendNext();
+}
+
+// ============ LOGIN PARTICLES ============
+function initLoginParticles(){
+  const canvas = document.getElementById('loginCanvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, particles=[];
+
+  function resize(){ W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
+
+  function mkP(){ return { x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.6+0.3, vx:(Math.random()-0.5)*0.35, vy:(Math.random()-0.5)*0.35, a:Math.random()*0.55+0.15 }; }
+
+  function loop(){
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(p=>{
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(245,166,35,${p.a})`; ctx.fill();
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>W) p.vx*=-1;
+      if(p.y<0||p.y>H) p.vy*=-1;
+    });
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<130){ ctx.beginPath(); ctx.moveTo(particles[i].x,particles[i].y); ctx.lineTo(particles[j].x,particles[j].y); ctx.strokeStyle=`rgba(245,166,35,${0.13*(1-d/130)})`; ctx.lineWidth=0.5; ctx.stroke(); }
+      }
+    }
+    const lp = document.getElementById('loginPage');
+    if(lp && lp.style.display!=='none') requestAnimationFrame(loop);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  for(let i=0;i<120;i++) particles.push(mkP());
+  loop();
+}
+
+window.onload = function() {
+  loadAll();
+  const now = new Date();
+  document.getElementById('selMonth').value = now.getMonth()+1;
+  document.getElementById('selYear').value = now.getFullYear();
+  initLoginParticles();
+};
+</script>
+
+</body>
+</html>
